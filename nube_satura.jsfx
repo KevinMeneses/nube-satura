@@ -354,12 +354,12 @@ dlt ? ( spl0 = yL - dryL * G; spl1 = yR - dryR * G; ) : ( spl0 = yL; spl1 = yR; 
 // ---- medidores
 _dL = yL - dryL * G; _dR = yR - dryR * G;
 e_add += ke * ((_dL * _dL + _dR * _dR) - e_add); e_dry += ke * ((dryL * dryL + dryR * dryR) * G * G - e_dry);
-_x = max(abs(a_inL), abs(a_inR)); _x > m_in ? m_in = _x;
-_x = max(abs(spl0), abs(spl1)); _x > m_out ? m_out = _x;
-_x = max(abs(_dL), abs(_dR)); _x > m_add ? m_add = _x; _x > h_add ? h_add = _x;
-_x = max(abs(dryL), abs(dryR)); _x > h_in ? h_in = _x;
-_x = max(abs(yL), abs(yR)); _x > h_out ? h_out = _x;
-_x = max(abs(vL), abs(vR)) / (md == 2 ? drive : gin); _x > h_lvl ? h_lvl = _x;
+a_x = max(abs(a_inL), abs(a_inR)); a_x > m_in ? m_in = a_x;
+a_x = max(abs(spl0), abs(spl1)); a_x > m_out ? m_out = a_x;
+a_x = max(abs(_dL), abs(_dR)); a_x > m_add ? m_add = a_x; a_x > h_add ? h_add = a_x;
+a_x = max(abs(dryL), abs(dryR)); a_x > h_in ? h_in = a_x;
+a_x = max(abs(yL), abs(yR)); a_x > h_out ? h_out = a_x;
+a_x = max(abs(vL), abs(vR)) / (md == 2 ? drive : gin); a_x > h_lvl ? h_lvl = a_x;
 (a_hc -= 1) <= 0 ? (
   a_hc = hslot;
   histIn[hw] = a2db_s(h_in); histOut[hw] = a2db_s(h_out); histAdd[hw] = a2db_s(h_add);
@@ -683,7 +683,7 @@ loop(_ncol,
   );
   _xx = hx + _c * SC;
   acc(0.50); gfx_line(_xx, h2y(_vo), _xx, _yb);
-  _va > HBOT ? ( gfx_set(1.0, 0.36, 0.33, 0.85); gfx_line(_xx, h2y(_va), _xx, _yb); );
+  _va > HBOT ? ( _ya = h2y(_va); gfx_set(1.0, 0.36, 0.33, 0.30); gfx_line(_xx, _ya, _xx, _yb); gfx_set(1.0, 0.42, 0.38, 1); gfx_rect(_xx, _ya, SC, 2 * SC, 1); );
   gfx_set(0.80, 0.82, 0.88, 0.7); gfx_rect(_xx, h2y(_vi), SC, SC, 1);
   _c += 1;
 );

@@ -8,7 +8,7 @@ def front():
     subprocess.run(["osascript", "-e", 'tell application "REAPER" to activate'], check=True)
 def cc(*args):
     if args[0][:2] in ("c:", "dc", "dd"): front()
-    subprocess.run(["cliclick", "-w", "60", *args], check=True); time.sleep(0.4)
+    subprocess.run(["cliclick", "-w", "150", *args], check=True); time.sleep(0.4)
 def wheel(n): subprocess.run(["swift", str(ROOT / "tests/scroll.swift"), str(n)], check=True); time.sleep(0.4)
 def shot(path): subprocess.run(["screencapture", "-x", "-R32,65,1000,693", path], check=True); return path
 def dump():

@@ -4,6 +4,8 @@
 A free saturator for [REAPER](https://www.reaper.fm), written as a JSFX (macOS / Windows / Linux), part of the
 [Nube plugins](https://github.com/KevinMeneses/nube-plugins).
 
+![Nube Satura](docs/captura.png)
+
 Three modes: **sub harmonics** (saturates only the low end and adds the harmonics in parallel without the
 fundamental, so an 808 is heard on phone and laptop speakers while the sub stays untouched), **saturate all**
 (with dry/wet mix) and **old radio / lo-fi** (band-pass, nasal, saturation, static, wow, width, bit depth, sample-rate
@@ -142,7 +144,11 @@ En un 808: modo *Armónicos del sub*, Pasa-altos un poco arriba de la nota más 
 - Latencia compensada en los tres modos (muestra 48000 exacta), radio con cantidad 0 y mezcla 0 = entrada exacta,
   picos y LUFS de los 23 presets.
 - `tests/perf.lua`: CPU (10 instancias, 60 s): 0.3 % sin oversampling, 5.5–5.8 % con 4x, 11.7–13 % con 8x.
-- `tests/ui_test.py`: pruebas de la interfaz con el mouse (modos, tipos, perillas, gráfica, botones, menú de presets).
+- `tests/ui_test.py`: 23 pruebas de la interfaz con el mouse (modos, tipos, perillas de los modos sub y radio,
+  arrastrar en la gráfica, doble clic, rueda, pendiente, oversampling, escuchar cambios, menú de presets): 0 fallas.
+  Como en Nube Clip, REAPER 7.86 a veces no le pasa a la gráfica un clic inyectado (1–3 por corrida, en lugares
+  distintos; un clic suelto sobre el mismo botón funciona 7 de 7 veces): si una acción no cambió nada, la prueba la
+  repite una vez y cuenta los "clics perdidos" aparte.
 
 Los casos con música usan grabaciones propias que no están en el repo (`tests/signals/`, las crea
 `tests/make_signals.py` desde el premaster de Nube baja y la librería de 808); sin ellas esos casos no se pueden correr.
@@ -158,4 +164,6 @@ Los casos con música usan grabaciones propias que no están en el repo (`tests/
   ahí, como en `claude_radio`.
 - La retención del lo-fi con factores que no son exactos en binario (2.3, 3.3) depende del redondeo en los empates:
   igual que el original; en las pruebas se usan factores exactos (2.5, 3.25, 1.75).
-- La gráfica corre en otro hilo: el audio y la interfaz tienen sus propias copias de la curva (`shp` / `shp_ui`).
+- La gráfica corre en otro hilo y en EEL2 las variables globales se comparten: el audio y la interfaz tienen sus
+  propias copias de la curva (`shp` / `shp_ui`) y no usan los mismos nombres temporales (un `_x` compartido hacía que
+  los botones de modo y tipo se dibujaran amontonados).
